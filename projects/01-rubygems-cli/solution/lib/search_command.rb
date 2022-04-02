@@ -7,26 +7,20 @@ class SearchCommand
   class << self
     def execute(argv)
       return CommandErrorResult.new("No keyword provided.") if argv.size < 1
-      # TODO: error when multiple keywords are specified
-      #return CommandErrorResult.new("Too many arguments!", 1) if argv.size > 2
       
-      options = SearchCommandOptionParser.parse(argv[1..])
-
-      begin
-        result = RubyGemsApi.search_gems(argv[0])
-      rescue StandardError => e
-        CommandErrorResult.new(e.message)
-      else
-        gems = result.map { |gem_data| GemData.new(gem_data)}
-        if options[:most_downloads_first] == true
-          gems.sort! { |a,b| b.downloads <=> a.downloads }
-        end
-        if !options[:license].nil?
-          gems.reject! { |gem| !gem.licenses.include?(options[:license]) if !gem.licenses.nil? }
-        end
-
-        SearchCommandResult.new(gems)
+      options = SearchCommandOptionParser.parse()
+      results = RubyGemsApi.search_gems(argv[0])
+      gems = results.map { |gem_data| GemData.new(gem_data)}
+      if options[:most_downloads_first]
+        gems = gems.sort_by { |gem| gem.downloads }
       end
+      if options[:license]
+        gems = gems.reject { |gem| !gem.licenses.include?(options[:license]) if gem.licenses }
+      end
+
+      SearchCommandResult.new(gems)
+    rescue GemNotFoundError, StandardApiError => e
+      CommandErrorResult.new(e.message)
     end
   end
 end
