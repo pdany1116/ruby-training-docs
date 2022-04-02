@@ -1,8 +1,8 @@
 require "spec_helper"
 require "./lib/program"
-require "./lib/command_results/command_error_result"
-require "./lib/command_results/show_command_result"
-require "./lib/command_results/search_command_result"
+require "./lib/commands/results/command_error_result"
+require "./lib/commands/results/show_command_result"
+require "./lib/commands/results/search_command_result"
 
 RSpec.describe Program do
   subject(:program) { described_class }

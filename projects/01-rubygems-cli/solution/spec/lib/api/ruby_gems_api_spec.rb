@@ -1,5 +1,5 @@
 require "spec_helper"
-require "./lib/ruby_gems_api"
+require "./lib/api/ruby_gems_api"
 
 RSpec.describe RubyGemsApi do
   subject(:api) { described_class }

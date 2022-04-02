@@ -1,7 +1,7 @@
-require "./lib/command_results/search_command_result"
-require "./lib/ruby_gems_api"
-require "./lib/search_command_option_parser"
-require "./lib/gem_data"
+require "./lib/commands/results/search_command_result"
+require "./lib/api/ruby_gems_api"
+require "./lib/commands/search/search_command_option_parser"
+require "./lib/gem/gem_data"
 
 class SearchCommand
   class << self

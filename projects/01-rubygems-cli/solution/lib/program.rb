@@ -1,7 +1,7 @@
-require "./lib/show_command"
-require "./lib/search_command"
-require "./lib/help_command"
-require "./lib/command_results/command_error_result"
+require "./lib/commands/show/show_command"
+require "./lib/commands/search/search_command"
+require "./lib/commands/help/help_command"
+require "./lib/commands/results/command_error_result"
 
 class Program
   class << self

@@ -1,4 +1,4 @@
-require "./lib/command_results/command_result"
+require "./lib/commands/results/command_result"
 
 class ShowCommandResult < CommandResult
   attr_accessor :gem_name, :info

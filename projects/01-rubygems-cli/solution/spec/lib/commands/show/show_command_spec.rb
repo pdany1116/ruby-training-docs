@@ -1,5 +1,5 @@
 require "spec_helper"
-require "./lib/show_command"
+require "./lib/commands/show/show_command"
 
 RSpec.describe ShowCommand do
   subject(:program) { described_class }

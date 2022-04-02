@@ -1,6 +1,6 @@
-require "./lib/command_results/show_command_result"
-require "./lib/command_results/command_error_result"
-require "./lib/ruby_gems_api"
+require "./lib/commands/results/show_command_result"
+require "./lib/commands/results/command_error_result"
+require "./lib/api/ruby_gems_api"
 
 class ShowCommand
   class << self

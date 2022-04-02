@@ -1,4 +1,4 @@
-require "./lib/command_results/help_command_result"
+require "./lib/commands/results/help_command_result"
 
 class CommandErrorResult < HelpCommandResult
   attr_accessor :error_message

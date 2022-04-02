@@ -1,5 +1,5 @@
 require "spec_helper"
-require "./lib/search_command"
+require "./lib/commands/search/search_command"
 
 RSpec.describe SearchCommand do
   subject(:program) { described_class }

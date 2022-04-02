@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "./lib/command_results/command_result"
+require "./lib/commands/results/command_result"
 
 HELP_MESSAGE = "Usage: cli.rb [COMMAND]... [OPTIONS]...\n" \
   "Commands:\n" \
