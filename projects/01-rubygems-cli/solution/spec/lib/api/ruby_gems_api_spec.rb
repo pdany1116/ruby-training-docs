@@ -10,9 +10,10 @@ RSpec.describe RubyGemsApi do
     context "with existing gem" do
       let(:gem_name) { "rspec" }
       it "returns rpsec info" do
-        result = gem_info
-        expect(result["name"]).to eq "rspec"
-        expect(result["info"]).to eq "BDD for Ruby"
+        gem = gem_info
+
+        expect(gem.name).to eq "rspec"
+        expect(gem.info).to eq "BDD for Ruby"
       end
     end
 
@@ -53,6 +54,7 @@ RSpec.describe RubyGemsApi do
       let(:keyword) { "rspec" }
       it "returns a non empty array of json objects" do
         result = search_gems
+
         expect(result.class).to be Array
         expect(result.size).not_to eq 0
       end
@@ -62,6 +64,7 @@ RSpec.describe RubyGemsApi do
       let(:keyword) { "not_existing_gem" }
       it "returns an empty array" do
         result = search_gems
+
         expect(result.class).to be Array
         expect(result.size).to eq 0
       end

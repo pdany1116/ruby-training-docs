@@ -1,15 +1,14 @@
 require "./lib/commands/results/command_result"
 
 class ShowCommandResult < CommandResult
-  attr_accessor :gem_name, :info
+  attr_accessor :gem
 
-  def initialize(gem_name, info, exit_code = 0)
+  def initialize(gem, exit_code = 0)
     super(exit_code)
-    @gem_name = gem_name
-    @info = info
+    @gem = gem
   end
 
   def output
-    "#{gem_name}\n#{info}"
+    "#{gem.name}\n#{gem.info}"
   end
 end

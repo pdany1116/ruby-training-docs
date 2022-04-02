@@ -6,13 +6,12 @@ class ShowCommand
   class << self
     def execute(argv)
       return CommandErrorResult.new("Too many arguments!") if argv.size > 2
-      begin
-        result = RubyGemsApi.gem_info(argv[0])
-      rescue StandardError => e
-        CommandErrorResult.new(e.message)
-      else
-        ShowCommandResult.new(result["name"], result["info"])
-      end
+
+      gem = RubyGemsApi.gem_info(argv[0])
+
+      ShowCommandResult.new(gem)
+    rescue StandardError => e
+      CommandErrorResult.new(e.message)
     end
   end
 end

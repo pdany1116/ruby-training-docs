@@ -65,8 +65,8 @@ RSpec.describe Program do
         result = execute
 
         expect(result.class).to be ShowCommandResult
-        expect(result.gem_name).to eq "rspec"
-        expect(result.info).to eq "BDD for Ruby"
+        expect(result.gem.name).to eq "rspec"
+        expect(result.gem.info).to eq "BDD for Ruby"
         expect(result.exit_code).to eq 0
       end
     end

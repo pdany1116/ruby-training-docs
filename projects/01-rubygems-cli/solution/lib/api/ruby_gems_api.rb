@@ -19,7 +19,7 @@ class RubyGemsApi
       
       raise StandardAPIError.new("An API error occurred.") if response.status != 200
       
-      JSON.parse(response.body)
+      GemData.new(JSON.parse(response.body))
     end
 
     def search_gems(keyword)
@@ -28,7 +28,8 @@ class RubyGemsApi
       response = @connection.get("/api/v1/search.json", {query: keyword})
       raise StandardAPIError.new("An API error occurred.") if response.status != 200
 
-      JSON.parse(response.body)
+      gems = JSON.parse(response.body)
+      gems.map { |gem| GemData.new(gem) }
     end
   end
 end
