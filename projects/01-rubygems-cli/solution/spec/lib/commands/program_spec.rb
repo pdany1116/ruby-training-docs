@@ -124,8 +124,9 @@ RSpec.describe Program do
       it "returns SearchCommandResult for the first argument" do
         result = execute
 
-        expect(result.class).to be CommandErrorResult
-        expect(result.exit_code).not_to eq 0
+        expect(result.class).to be SearchCommandResult
+        expect(result.gems.size).not_to eq 0
+        expect(result.exit_code).to eq 0
       end
     end
   end

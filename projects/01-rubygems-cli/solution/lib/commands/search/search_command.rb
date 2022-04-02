@@ -1,6 +1,6 @@
 require "./lib/commands/results/search_command_result"
 require "./lib/api/ruby_gems_api"
-require "./lib/commands/search/search_command_option_parser"
+require "./lib/commands/search/option_parser_search_command"
 require "./lib/gem/gem_data"
 
 class SearchCommand
@@ -8,18 +8,15 @@ class SearchCommand
     def execute(argv)
       return CommandErrorResult.new("No keyword provided.") if argv.size < 1
       
-      options = SearchCommandOptionParser.parse()
+      options = OptionParserSearchCommand.parse(argv[1..])
       results = RubyGemsApi.search_gems(argv[0])
       gems = results.map { |gem_data| GemData.new(gem_data)}
-      if options[:most_downloads_first]
-        gems = gems.sort_by { |gem| gem.downloads }
-      end
-      if options[:license]
-        gems = gems.reject { |gem| !gem.licenses.include?(options[:license]) if gem.licenses }
+      options.each do |option|
+        gems = option.apply(gems)
       end
 
       SearchCommandResult.new(gems)
-    rescue GemNotFoundError, StandardApiError => e
+    rescue GemNotFoundError, StandardAPIError => e
       CommandErrorResult.new(e.message)
     end
   end
