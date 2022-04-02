@@ -8,6 +8,6 @@ class OptionLicense
   end
 
   def apply(gems)
-    gems.reject { |gem| !gem.licenses.include?(@license) if gem.licenses }
+    gems.select { |gem| gem.licenses and gem.licenses.include?(@license) }
   end
 end

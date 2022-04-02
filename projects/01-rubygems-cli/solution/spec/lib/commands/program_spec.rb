@@ -129,5 +129,76 @@ RSpec.describe Program do
         expect(result.exit_code).to eq 0
       end
     end
+
+    context "with search command and --license option" do
+      let(:argv) { %w[search rspec --license MIT] }
+
+      it "returns SearchCommandResult with gems containing specified license" do
+        result = execute
+
+        expect(result.class).to be SearchCommandResult
+        expect(result.gems.size).not_to eq 0
+        expect(result.exit_code).to eq 0
+      end
+    end
+
+    context "with search command and --license option, but with not existing license" do
+      let(:argv) { %w[search rspec --license NOT_EXISTING_LICENSE] }
+
+      it "returns SearchCommandResult with empty array of gems" do
+        result = execute
+
+        expect(result.class).to be SearchCommandResult
+        expect(result.gems.size).to eq 0
+        expect(result.exit_code).to eq 0
+      end
+    end
+
+    context "with search command and --most-downloads-first option" do
+      let(:argv) { %w[search rspec --most-downloads-first] }
+
+      it "returns SearchCommandResult with gems ordered by most downloads first" do
+        result = execute
+
+        expect(result.class).to be SearchCommandResult
+        expect(result.gems.size).not_to eq 0
+        expect(result.exit_code).to eq 0
+      end
+    end
+
+    context "with search command and --most-downloads-first, --license options" do
+      let(:argv) { %w[search rspec --most-downloads-first --license MIT] }
+
+      it "returns SearchCommandResult with gems ordered by most downloads first and containing specified license" do
+        result = execute
+
+        expect(result.class).to be SearchCommandResult
+        expect(result.gems.size).not_to eq 0
+        expect(result.exit_code).to eq 0
+      end
+    end
+
+    context "with search command and --most-downloads-first, --license, --not-existing-option options" do
+      let(:argv) { %w[search rspec --not-existing-option --most-downloads-first --license MIT] }
+
+      it "returns CommandErrorResult" do
+        result = execute
+
+        expect(result.class).to be CommandErrorResult
+        expect(result.exit_code).not_to eq 0
+      end
+    end
+
+    context "with search command and --not-existing-option option" do
+      let(:argv) { %w[search rspec --not-existing-option] }
+
+      it "returns CommandErrorResult" do
+        result = execute
+
+        expect(result.class).to be CommandErrorResult
+        expect(result.exit_code).not_to eq 0
+      end
+    end
+
   end
 end
