@@ -8,7 +8,7 @@ RSpec.describe ShowCommand do
     subject(:execute) { program.execute(arg) }
 
     context "with existing gem" do
-      let(:arg) { "rspec" }
+      let(:arg) { ["rspec"] }
 
       it "returns ShowCommandResult" do
         result = execute
