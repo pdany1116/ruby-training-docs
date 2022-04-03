@@ -12,8 +12,8 @@ class OptionParserSearchCommand
           options.push(OptionMostDownloadsFirst.new)
         end
     
-        opts.on(OptionLicense::NAME) do |license|
-          options.push(OptionLicense.new(license))
+        opts.on(OptionLicense::NAME, Array) do |licenses|
+          options.push(OptionLicense.new(licenses))
         end
       end.parse!(args)
 

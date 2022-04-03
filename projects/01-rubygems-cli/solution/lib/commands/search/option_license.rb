@@ -1,13 +1,13 @@
 class OptionLicense
-  NAME = "--license LICENSE"
+  NAME = "--licenses LICENSES"
   
-  attr_reader :license
+  attr_reader :licenses
 
-  def initialize(license)
-    @license = license
+  def initialize(licenses)
+    @licenses = licenses
   end
 
   def apply(gems)
-    gems.select { |gem| gem.licenses and gem.licenses.include?(@license) }
+    gems.select { |gem| gem.licenses and gem.licenses.intersection(@licenses).any? }
   end
 end

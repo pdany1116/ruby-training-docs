@@ -8,8 +8,8 @@ HELP_MESSAGE = "Usage: cli.rb [COMMAND]... [OPTIONS]...\n" \
   "    search [KEYWORD]   Display a list of all gems that match the specified keyword\n" \
   "\n" \
   "Options:\n" \
-  "    <search> --license LICENSE\n" \
-  "           Filter gems by specified license.\n" \
+  "    <search> --licenses LICENSES\n" \
+  "           Show gems containing one of the specified licenses separated by commas.\n" \
   "    <search> --most-downloads-first\n" \
   "           Order gems starting with the downloaded first.\n"           
 

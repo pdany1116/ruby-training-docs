@@ -130,8 +130,8 @@ RSpec.describe Program do
       end
     end
 
-    context "with search command and --license option" do
-      let(:argv) { %w[search rspec --license MIT] }
+    context "with search command and --licenses option" do
+      let(:argv) { %w[search rspec --licenses MIT] }
 
       it "returns SearchCommandResult with gems containing specified license" do
         result = execute
@@ -142,8 +142,8 @@ RSpec.describe Program do
       end
     end
 
-    context "with search command and --license option, but with not existing license" do
-      let(:argv) { %w[search rspec --license NOT_EXISTING_LICENSE] }
+    context "with search command and --licenses option, but with not existing license" do
+      let(:argv) { %w[search rspec --licenses NOT_EXISTING_LICENSE] }
 
       it "returns SearchCommandResult with empty array of gems" do
         result = execute
@@ -166,8 +166,8 @@ RSpec.describe Program do
       end
     end
 
-    context "with search command and --most-downloads-first, --license options" do
-      let(:argv) { %w[search rspec --most-downloads-first --license MIT] }
+    context "with search command and --most-downloads-first, --licenses options" do
+      let(:argv) { %w[search rspec --most-downloads-first --licenses MIT] }
 
       it "returns SearchCommandResult with gems ordered by most downloads first and containing specified license" do
         result = execute
@@ -178,8 +178,8 @@ RSpec.describe Program do
       end
     end
 
-    context "with search command and --most-downloads-first, --license, --not-existing-option options" do
-      let(:argv) { %w[search rspec --not-existing-option --most-downloads-first --license MIT] }
+    context "with search command and --most-downloads-first, --licenses, --not-existing-option options" do
+      let(:argv) { %w[search rspec --not-existing-option --most-downloads-first --licenses MIT] }
 
       it "returns CommandErrorResult" do
         result = execute

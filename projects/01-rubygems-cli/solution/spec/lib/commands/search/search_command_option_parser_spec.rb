@@ -17,8 +17,8 @@ RSpec.describe OptionParserSearchCommand do
       end
     end
 
-    context "with --license LICENSE option" do
-      let(:args) { %w[--license LICENSE] }
+    context "with --licenses LICENSE option" do
+      let(:args) { %w[--licenses LICENSE] }
 
       it "returns options array with one OptionLicense object" do
         result = parse
@@ -42,7 +42,7 @@ RSpec.describe OptionParserSearchCommand do
     end
 
     context "with both options" do
-      let(:args) { %w[--most-downloads-first --license LICENSE] }
+      let(:args) { %w[--most-downloads-first --licenses LICENSE] }
 
       it "returns options array with one OptionMostDownloadsFirst and one OptionLicense" do
         result = parse
@@ -63,18 +63,22 @@ RSpec.describe OptionParserSearchCommand do
     end
 
     context "with multiple options (valid and invalid)" do
-      let(:args) { %w[--most-downloads-first --license LICENSE --invalid-option] }
+      let(:args) { %w[--most-downloads-first --licenses LICENSE --invalid-option] }
 
       it "raises ParserError::InvalidOption" do
         expect { parse }.to raise_error(OptionParser::InvalidOption)
       end
     end
 
-    context "with multiple arguments for --license option", :skip do
-      let(:args) { %w[--license MIT LICENSE] }
+    context "with multiple arguments for --licenses option" do
+      let(:args) { %w[--licenses MIT Apache-2.0] }
 
-      it "raises ParserError::InvalidOption" do
-        expect { parse }.to raise_error(OptionParser::InvalidOption)
+      it "returns options array with one OptionLicense object" do
+        result = parse
+
+        expect(result.size).to eq 1
+        expect(result.class).to be Array
+        expect(result[0].class).to be OptionLicense
       end
     end
   end
