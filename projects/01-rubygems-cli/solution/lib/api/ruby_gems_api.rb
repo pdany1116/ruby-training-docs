@@ -4,7 +4,7 @@ require "json"
 require "./lib/errors/gem_not_found_error"
 require "./lib/errors/standard_api_error"
 
-class RubyGemsApi
+class RubyGemsAPI
   @connection = Faraday.new("https://rubygems.org") do |faraday|
     faraday.adapter :net_http
     faraday.request :authorization, "Bearer", ENV['RUBYGEMS_API_KEY']
@@ -28,8 +28,7 @@ class RubyGemsApi
       response = @connection.get("/api/v1/search.json", {query: keyword})
       raise StandardAPIError.new("An API error occurred.") if response.status != 200
 
-      gems = JSON.parse(response.body)
-      gems.map { |gem| GemData.new(gem) }
+      JSON.parse(response.body).map { |gem| GemData.new(gem) }
     end
   end
 end

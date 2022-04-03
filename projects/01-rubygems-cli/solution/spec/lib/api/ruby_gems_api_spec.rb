@@ -1,7 +1,7 @@
 require "spec_helper"
 require "./lib/api/ruby_gems_api"
 
-RSpec.describe RubyGemsApi do
+RSpec.describe RubyGemsAPI do
   subject(:api) { described_class }
 
   describe ".gem_info" do
