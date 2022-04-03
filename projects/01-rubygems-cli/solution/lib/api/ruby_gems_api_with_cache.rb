@@ -6,12 +6,12 @@ class RubyGemsAPIWithCache
     SHOW_ACTION = "show"
     SEARCH_ACTION = "search"
 
-    def gem_info(gem_name)
+    def show_gem(gem_name)
       key = cache_key(gem_name, SHOW_ACTION)
       entry = cache.read(key)
       return GemData.new(JSON.parse(entry.value)) if entry
 
-      gem = RubyGemsAPI.gem_info(gem_name)
+      gem = RubyGemsAPI.show_gem(gem_name)
       cache.write(key, JSON.dump(gem.raw_data))
 
       gem

@@ -11,7 +11,7 @@ class RubyGemsAPI
   end
 
   class << self
-    def gem_info(gem_name)
+    def show_gem(gem_name)
       raise ArgumentError.new("Invalid gem name provided.") if gem_name.nil? || gem_name.empty?
       
       response = @connection.get("/api/v1/gems/#{gem_name}.json")
