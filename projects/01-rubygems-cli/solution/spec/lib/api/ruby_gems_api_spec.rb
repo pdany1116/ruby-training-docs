@@ -19,6 +19,7 @@ RSpec.describe RubyGemsAPI do
 
     context "with non existing gem" do
       let(:gem_name) { "not_existing_gem" }
+
       it "raises GemNotFoundError" do
         expect { show_gem }.to raise_error(GemNotFoundError)
       end
@@ -26,6 +27,7 @@ RSpec.describe RubyGemsAPI do
 
     context "with gem name empty" do
       let(:gem_name) { "" }
+
       it "raises ArgumentError" do
         expect { show_gem }.to raise_error(ArgumentError)
       end
@@ -33,6 +35,7 @@ RSpec.describe RubyGemsAPI do
 
     context "with gem name nil" do
       let(:gem_name) { nil }
+
       it "raises ArgumentError" do
         expect { show_gem }.to raise_error(ArgumentError)
       end
@@ -40,6 +43,7 @@ RSpec.describe RubyGemsAPI do
 
     context "with Ruby Gems webserver down or API problems" do
       let(:gem_name) { "it_does_not_matter" }
+
       it "raises StandardAPIError on failed request", :skip do
         # TODO: Mock RubyGems webserver
         expect { show_gem }.to raise_error(StandardAPIError)
@@ -52,6 +56,7 @@ RSpec.describe RubyGemsAPI do
 
     context "with keyword valid" do
       let(:keyword) { "rspec" }
+
       it "returns a non empty array of json objects" do
         result = search_gems
 
@@ -62,6 +67,7 @@ RSpec.describe RubyGemsAPI do
 
     context "with keyword invalid" do
       let(:keyword) { "not_existing_gem" }
+
       it "returns an empty array" do
         result = search_gems
 
@@ -72,6 +78,7 @@ RSpec.describe RubyGemsAPI do
 
     context "with keyword empty" do
       let(:keyword) { "" }
+
       it "raises ArgumentError" do
         expect { search_gems }.to raise_error(ArgumentError)
       end
@@ -79,6 +86,7 @@ RSpec.describe RubyGemsAPI do
 
     context "with keyword nil" do
       let(:keyword) { nil }
+
       it "raises ArgumentError" do
         expect { search_gems }.to raise_error(ArgumentError)
       end
@@ -86,6 +94,7 @@ RSpec.describe RubyGemsAPI do
 
     context "with Ruby Gems webserver down or API problems" do
       let(:gem_name) { "it_does_not_matter" }
+
       it "raises StandardAPIError on failed request", :skip do
         # TODO: Mock RubyGems webserver
         expect { show_gem }.to raise_error(StandardAPIError)
