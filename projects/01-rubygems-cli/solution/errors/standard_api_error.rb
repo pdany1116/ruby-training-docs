@@ -1,0 +1,2 @@
+class StandardAPIError < StandardError
+end
