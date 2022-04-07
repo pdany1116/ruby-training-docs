@@ -4,6 +4,15 @@ require "rspec"
 RSpec.describe MemeGenerator do
   include Rack::Test::Methods
 
+  MEME_REQUEST = <<-JSON
+    {
+      "meme": {
+        "uri": "https://s3.amazonaws.com/com.twilio.prod.twilio-docs/images/test.original.jpg",
+        "text": "Hi mom!"
+      }
+    }
+  JSON
+
   def app
     described_class
   end
@@ -24,7 +33,7 @@ RSpec.describe MemeGenerator do
 
     context "with valid request body" do
       let(:route) { "/memes" }
-      let(:request) { "{\"test\": 123}" }
+      let(:request) { MEME_REQUEST }
 
       it "responds with redirect" do
         test_post
