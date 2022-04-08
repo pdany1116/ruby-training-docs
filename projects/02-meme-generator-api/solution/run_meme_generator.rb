@@ -1,3 +1,3 @@
-require "./lib/meme_generator"
+require "./lib/meme_generator_api"
 
-MemeGenerator::run
+MemeGeneratorAPI::run

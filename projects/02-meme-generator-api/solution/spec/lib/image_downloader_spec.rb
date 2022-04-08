@@ -11,14 +11,14 @@ RSpec.describe ImageDownloader do
     end
 
     before :each do
-      FileUtils.rm_rf("./tmp/.", secure: true)
+      Dir.mkdir("./tmp") unless Dir.exists?("./tmp")
     end
 
     context "with valid uri" do
       let(:uri) { "https://s3.amazonaws.com/com.twilio.prod.twilio-docs/images/test.original.jpg" }
       let(:path) { "./tmp/original.jpeg"}
 
-      it "returns ShowCommandResult" do
+      it "creates a file on the disk at the specified path" do
         result = download
 
         File.file?(path)

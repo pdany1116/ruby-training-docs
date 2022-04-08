@@ -6,6 +6,8 @@ GEM
     diff-lcs (1.5.0)
     down (5.3.1)
       addressable (~> 2.8)
+    fastimage (2.2.6)
+    mini_magick (4.11.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     nio4r (2.5.8)
@@ -43,6 +45,8 @@ PLATFORMS
 
 DEPENDENCIES
   down
+  fastimage
+  mini_magick
   puma
   rack
   rack-test
