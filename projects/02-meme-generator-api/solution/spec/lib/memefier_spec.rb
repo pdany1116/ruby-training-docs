@@ -26,7 +26,7 @@ RSpec.describe Memefier do
       it "creates a new file on the disk at specified path, with size different than the original one" do
         result = memefy
 
-        File.file?(destination)
+        expect(File.file?(destination)).to eq true
         expect(File.size(source)).not_to eq File.size(destination)
       end
     end

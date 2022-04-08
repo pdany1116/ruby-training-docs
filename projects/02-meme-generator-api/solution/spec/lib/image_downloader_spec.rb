@@ -21,7 +21,7 @@ RSpec.describe ImageDownloader do
       it "creates a file on the disk at the specified path" do
         result = download
 
-        File.file?(path)
+        expect(File.file?(path)).to eq true
       end
     end
   end
