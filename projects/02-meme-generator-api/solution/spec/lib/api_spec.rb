@@ -1,7 +1,7 @@
-require "./lib/meme_generator_api"
+require "./lib/api"
 require "rspec"
 
-RSpec.describe MemeGeneratorAPI do
+RSpec.describe API do
   include Rack::Test::Methods
 
   MEME_REQUEST = <<-JSON

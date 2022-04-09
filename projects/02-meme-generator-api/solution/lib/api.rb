@@ -3,7 +3,7 @@ require "json"
 require "./lib/image_downloader"
 require "./lib/memefier"
 
-class MemeGeneratorAPI < Sinatra::Application
+class API < Sinatra::Application
   TMP_PATH = "./tmp"
   IMAGE_PATH = TMP_PATH + "/original.jpeg"
   MEME_PATH = TMP_PATH + "/meme.jpeg"
