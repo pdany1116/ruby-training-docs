@@ -1,0 +1,2 @@
+class MemeBodyError < StandardError
+end

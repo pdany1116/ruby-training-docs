@@ -39,9 +39,17 @@ RSpec.describe API do
     end
 
     context "with invalid request body" do
-      let(:body) { "{test : 123}" }
+      # 'uri' is wrong spelled
+      let(:body) do
+        {
+          meme: {
+            ur: "https://s3.amazonaws.com/com.twilio.prod.twilio-docs/images/test.original.jpg",
+            text: "Hi mom!"
+          }
+        }.to_json
+      end
 
-      it "responds with bad request" do
+      fit "responds with bad request" do
         test_post
 
         expect(last_response.status).to eq 400

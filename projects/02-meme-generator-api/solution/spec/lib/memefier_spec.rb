@@ -21,7 +21,7 @@ RSpec.describe Memefier do
       let(:source) { SOURCE_PATH }
       let(:text) { "2 pancakes in the desert..." }
 
-      it "creates a new file on the disk at specified path, with size different than the original one" do
+      it "modifies the source file and size is different than the original" do
         initial_size = File.size(source)
 
         result = memefy
