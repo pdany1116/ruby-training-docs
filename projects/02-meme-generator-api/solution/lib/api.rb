@@ -1,36 +1,43 @@
 require "sinatra/base"
 require "json"
-require "./lib/image_downloader"
+require "pry"
+require "down"
 require "./lib/memefier"
+require "./lib/body_parser"
 
 class API < Sinatra::Application
-  TMP_PATH = "./tmp"
-  IMAGE_PATH = TMP_PATH + "/original.jpeg"
-  MEME_PATH = TMP_PATH + "/meme.jpeg"
+  TMP_PATH = "./tmp/"
 
   post "/generate" do
-    body = request.body.read
-    return [400, "No request message!"] if body.empty?
-    
-    body = JSON.parse(body)
-    Dir.mkdir(TMP_PATH) unless Dir.exists?(TMP_PATH)
-    ImageDownloader.download(body["meme"]["uri"], IMAGE_PATH)
-    Memefier.memefy(IMAGE_PATH, MEME_PATH, body["meme"]["text"])
+    body = BodyParser.parse(request.body.read)
+    create_tmp_directory
+    image_path = TMP_PATH + body.file_name
+    Down.download(body.uri, destination: image_path)
+    Memefier.memefy(image_path, body.text)
 
-    redirect "/meme", 303
+    redirect "/meme/#{body.file_name}", 303
+
+  rescue Down::Error, URI::Error
+    [400, "Invalid url in request body!"]
   rescue JSON::ParserError
-    [400, "Invalid request syntax!"]
+    [400, "Invalid request body syntax!"]
   rescue
     [500, "An unknown internal error occured!"]
   end
 
-  get "/meme" do
-    send_file(MEME_PATH)
+  get "/meme/:file" do
+    send_file(TMP_PATH + params[:file])
   end
 
   class << self
     def run
       run!
     end
+  end
+
+  private
+
+  def create_tmp_directory
+    Dir.mkdir(TMP_PATH) unless Dir.exists?(TMP_PATH)
   end
 end
