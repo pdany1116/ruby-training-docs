@@ -17,14 +17,14 @@ class MemeGeneratorAPI < Sinatra::Application
     ImageDownloader.download(body["meme"]["uri"], IMAGE_PATH)
     Memefier.memefy(IMAGE_PATH, MEME_PATH, body["meme"]["text"])
 
-    redirect "/meme", 307
+    redirect "/meme", 303
   rescue JSON::ParserError
     [400, "Invalid request syntax!"]
   rescue
     [500, "An unknown internal error occured!"]
   end
 
-  post "/meme" do
+  get "/meme" do
     send_file(MEME_PATH)
   end
 
