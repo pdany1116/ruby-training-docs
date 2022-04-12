@@ -38,8 +38,7 @@ RSpec.describe API do
       end
     end
 
-    context "with invalid request body" do
-      # 'uri' is wrong spelled
+    context "with invalid request body, uri is wrong spelled" do
       let(:body) do
         {
           meme: {
