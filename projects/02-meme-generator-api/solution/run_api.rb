@@ -1,4 +1,4 @@
 require "./lib/api"
 
-API::run
+Dir.mkdir("./tmp/") unless Dir.exists?("./tmp/")
 API.run
