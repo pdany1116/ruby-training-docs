@@ -70,16 +70,16 @@ RSpec.describe MemeBodyParser do
     context "with invalid body json syntax, missing starting brace" do
       let(:body) { 'meme: {uri: "uri.example.com",text: "Hi mom!"}}' }
 
-      it "raises JSONParserError " do
-        expect{ parse }.to raise_error(JSON::ParserError)
+      it "raises MemeBodyError with invalid json syntax" do
+        expect{ "#{parse}" }.to raise_error("Invalid body JSON syntax!")
       end
     end
 
     context "with empty json body" do
       let(:body) { "" }
 
-      it "raises JSONParserError " do
-        expect{ parse }.to raise_error(JSON::ParserError)
+      it "raises MemeBodyError with invalid json syntax" do
+        expect{ "#{parse}" }.to raise_error("Invalid body JSON syntax!")
       end
     end
   end

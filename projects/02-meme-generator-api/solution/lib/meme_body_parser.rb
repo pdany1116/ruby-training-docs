@@ -11,5 +11,8 @@ class MemeBodyParser
     raise MemeBodyError.new("'meme.text' not found in body!") unless json_body["meme"]["text"]
 
     MemeBody.new(json_body["meme"]["uri"], json_body["meme"]["text"])
+
+  rescue JSON::ParserError
+    raise MemeBodyError.new("Invalid body JSON syntax!")
   end
 end
