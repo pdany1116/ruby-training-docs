@@ -2,7 +2,7 @@ require "mini_magick"
 
 class Memefier
   def self.memefy(source, text)
-    image = MiniMagick::Image.open(source)
+    image = MiniMagick::Image.open("./tmp/" + source)
     
     image.combine_options do |options|
       options.gravity "south"
@@ -14,6 +14,6 @@ class Memefier
       options.draw "text 0,0 '#{text}'"
     end
 
-    image.write(source)
+    image.write("./tmp/" + source)
   end
 end
