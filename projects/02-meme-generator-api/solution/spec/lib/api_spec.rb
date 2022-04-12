@@ -49,7 +49,7 @@ RSpec.describe API do
         }.to_json
       end
 
-      fit "responds with bad request" do
+      it "responds with bad request" do
         test_post
 
         expect(last_response.status).to eq 400
