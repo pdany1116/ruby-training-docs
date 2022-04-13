@@ -16,8 +16,6 @@ class API < Sinatra::Application
 
   rescue MemeBodyError, ImageDownloaderError => e
     [400, "#{e}"]
-  rescue
-    [500, "An unknown internal error occured!"]
   end
 
   get "/meme/:file" do
