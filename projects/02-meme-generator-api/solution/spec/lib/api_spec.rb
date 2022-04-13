@@ -158,4 +158,130 @@ RSpec.describe API do
       end
     end
   end
+
+  describe "POST /signup" do
+    subject(:test_post) { post '/signup', body }
+
+    context "with valid request body" do
+      let(:body) do
+        {
+          user: {
+            username: "user1",
+            password: "password"
+          }
+        }.to_json
+      end
+
+      it "responds with created status and user token in response body" do
+        test_post
+
+        token = JSON.parse(last_response.body)["user"]["token"]
+
+        expect(last_response.status).to eq 201
+        expect(token.match?(/^[0-9a-hA-H]+$/)).to eq true
+      end
+    end
+
+    context "with empty username" do
+      let(:body) do
+        {
+          user: {
+            username: "",
+            password: "password"
+          }
+        }.to_json
+      end
+
+      let(:error) { { message: "Username is blank" }.to_json }
+
+      it "responds with bad request and username blank error message", :skip do
+        test_post
+
+        errors = JSON.parse(last_response.body)["errors"]
+
+        expect(last_response.status).to eq 400
+        expect(errors[0]).to eq error
+      end
+    end
+
+    context "with empty password" do
+      let(:body) do
+        {
+          user: {
+            username: "user2",
+            password: ""
+          }
+        }.to_json
+      end
+
+      let(:error) { { message: "Password is blank" }.to_json }
+
+      it "responds with bad request and password blank error message", :skip do
+        test_post
+
+        errors = JSON.parse(last_response.body)["errors"]
+
+        expect(last_response.status).to eq 400
+        expect(errors[0]).to eq error
+      end
+    end
+
+    context "with valid request body, but username already exists" do
+      let(:body) do
+        {
+          user: {
+            username: "user3",
+            password: "password"
+          }
+        }.to_json
+      end
+
+      it "responds with conflict", :skip do
+        test_post
+
+        expect(last_response.status).to eq 409
+      end
+    end
+  end
+
+  describe "POST /login" do
+    subject(:test_post) { post '/login', body }
+
+    context "with valid request body" do
+      let(:body) do
+        {
+          user: {
+            username: "user4",
+            password: "password"
+          }
+        }.to_json
+      end
+
+      it "responds with ok and user token in response body", :skip do
+        test_post
+
+        token = JSON.parse(last_response.body)["user"]["token"]
+
+        expect(last_response.status).to eq 200
+        expect(token.match?(/^[0-9a-hA-H]+$/)).to eq true
+      end
+    end
+
+    context "with valid request body, but username already exists/invalid combination" do
+      let(:body) do
+        {
+          user: {
+            username: "user5",
+            password: "password"
+          }
+        }.to_json
+      end
+
+      it "responds with conflict", :skip do
+        test_post
+
+        expect(last_response.status).to eq 409
+      end
+    end
+  end
 end
