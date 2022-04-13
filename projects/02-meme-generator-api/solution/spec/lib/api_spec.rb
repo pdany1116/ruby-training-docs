@@ -18,6 +18,7 @@ RSpec.describe API do
         test_post
 
         expect(last_response.status).to eq 400
+        expect(last_response.body).to eq "Invalid body JSON syntax!"
       end
     end
 
@@ -35,6 +36,34 @@ RSpec.describe API do
         test_post
 
         expect(last_response.status).to eq 303
+        expect(last_response.location).to eq "http://example.org/meme/test.original.jpg"
+      end
+    end
+
+    context "with invalid request body, non json format" do
+      let(:body) { "{ds234]" }
+
+      it "responds with bad request" do
+        test_post
+
+        expect(last_response.status).to eq 400
+        expect(last_response.body).to eq "Invalid body JSON syntax!"
+      end
+    end
+
+    context "with invalid request body, meme is missing" do
+      let(:body) do
+        {
+          uri: "https://s3.amazonaws.com/com.twilio.prod.twilio-docs/images/test.original.jpg",
+          text: "Hi mom!"
+        }.to_json
+      end
+
+      it "responds with bad request" do
+        test_post
+
+        expect(last_response.status).to eq 400
+        expect(last_response.body).to eq "'meme' not found in body!"
       end
     end
 
@@ -52,6 +81,24 @@ RSpec.describe API do
         test_post
 
         expect(last_response.status).to eq 400
+        expect(last_response.body).to eq "'meme.uri' not found in body!"
+      end
+    end
+
+    context "with invalid request body, text is missing" do
+      let(:body) do
+        {
+          meme: {
+            uri: "https://s3.amazonaws.com/com.twilio.prod.twilio-docs/images/test.original.jpg"
+          }
+        }.to_json
+      end
+
+      it "responds with bad request" do
+        test_post
+
+        expect(last_response.status).to eq 400
+        expect(last_response.body).to eq "'meme.text' not found in body!"
       end
     end
 
@@ -69,6 +116,7 @@ RSpec.describe API do
         test_post
 
         expect(last_response.status).to eq 400
+        expect(last_response.body).to eq "Invalid URI provided!"
       end
     end
   end
