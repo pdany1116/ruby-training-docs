@@ -66,7 +66,7 @@ RSpec.describe DB do
       end
 
       it "returns not nil" do
-        expect(insert_user).not_to be nil
+        expect(insert_user.class).to be Integer
       end
     end
   end
@@ -95,7 +95,7 @@ RSpec.describe DB do
       end
 
       it "returns not nil" do
-        expect(insert_token).not_to be nil
+        expect(insert_token.class).to be Integer
       end
     end
   end

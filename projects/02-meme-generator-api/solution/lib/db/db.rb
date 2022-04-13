@@ -59,6 +59,8 @@ class DB
         '#{user.password}'
       );
     SQL
+
+    @db.last_insert_row_id
   end
 
   def insert_token(token)
@@ -69,6 +71,8 @@ class DB
         '#{token.token}'
       );
     SQL
+
+    @db.last_insert_row_id
   end
 
   def clear_all
