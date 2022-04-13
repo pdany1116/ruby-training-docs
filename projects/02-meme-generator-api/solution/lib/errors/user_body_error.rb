@@ -1,0 +1,2 @@
+class UserBodyError < StandardError
+end
