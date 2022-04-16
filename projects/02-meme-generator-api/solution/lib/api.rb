@@ -9,6 +9,8 @@ require "./lib/image_downloader"
 require "./lib/password_hasher"
 require "./lib/token_generator"
 require "./lib/user_validator"
+require "./lib/errors/invalid_credentials_error"
+require "./lib/errors/user_not_found_error"
 
 class API < Sinatra::Application
   post "/signup" do
@@ -30,6 +32,20 @@ class API < Sinatra::Application
   post "/login" do
     params = UserBodyParser.parse(request.body.read)
     UserValidator.validate(params)
+    user = db.user_by_username(params["user"]["username"])
+
+    return [409, "Invalid username or password!"] unless 
+      PasswordHasher.valid?(user.password, params["user"]["password"])
+
+    token = TokenGenerator.generate
+    db.insert_token(Token.new(user.id, token))
+
+    [200, { "user": { "token": token } }.to_json]
+
+  rescue UserBodyError, UserInputError => e
+    [400, "#{e}"]
+  rescue UserNotFoundError
+    [409, "Invalid username or password!ds"]
   end
 
   post "/generate" do

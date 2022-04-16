@@ -4,6 +4,7 @@ require "fileutils"
 require "./lib/db/user"
 require "./lib/db/token"
 require "./lib/errors/user_existing_error"
+require "./lib/errors/user_not_found_error"
 
 class DB
   DB_PATH = "./db.sqlite3"
@@ -38,6 +39,8 @@ class DB
       FROM #{USERS_TABLE} 
       WHERE username = '#{username}';
     SQL
+    
+    raise UserNotFoundError.new("Invalid username!") if rows.empty?
 
     User.new(rows[0][0], rows[0][1], rows[0][2])
   end

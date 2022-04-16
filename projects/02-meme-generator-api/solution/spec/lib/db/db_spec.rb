@@ -115,4 +115,43 @@ RSpec.describe DB do
       end
     end
   end
+
+  describe "#user_by_username" do
+    subject(:user_by_username) { db.user_by_username(username) }
+
+    before :context do
+      described_class.create.clear_all
+    end
+
+    after :context do
+      described_class.create.clear_all
+    end
+
+    context "with existing user" do
+      let(:username) { "username" }
+
+      before :each do
+        db.insert_user(User.new(username, "password"))
+      end
+
+      it "returns User object" do
+        result = user_by_username
+
+        expect(result.class).to be User
+        expect(result.username).to eq "username"
+      end
+    end
+
+    context "with not existing user" do
+      let(:username) { "username" }
+
+      before :each do
+        described_class.create.clear_all
+      end
+
+      it "raises UserNotFound" do
+        expect { user_by_username }.to raise_error(UserNotFoundError)
+      end
+    end
+  end
 end

@@ -256,7 +256,7 @@ RSpec.describe API do
   describe "POST /login" do
     subject(:test_post) { post '/login', body }
 
-    context "with valid request body" do
+    context "with valid request body and with user existing" do
       let(:body) do
         {
           user: {
@@ -266,7 +266,11 @@ RSpec.describe API do
         }.to_json
       end
 
-      it "responds with ok and user token in response body", :skip do
+      before :each do
+        post '/signup', body
+      end
+
+      it "responds with ok and user token in response body" do
         test_post
 
         token = JSON.parse(last_response.body)["user"]["token"]
@@ -276,7 +280,7 @@ RSpec.describe API do
       end
     end
 
-    context "with valid request body, but username already exists/invalid combination" do
+    context "with valid request body, but with not registered user" do
       let(:body) do
         {
           user: {
@@ -286,7 +290,7 @@ RSpec.describe API do
         }.to_json
       end
 
-      it "responds with conflict", :skip do
+      it "responds with conflict" do
         test_post
 
         expect(last_response.status).to eq 409

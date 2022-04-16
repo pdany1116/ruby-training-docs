@@ -19,7 +19,8 @@ RSpec.describe ImageDownloader do
       let(:uri) { "https://s3.amazonaws.com/com.twilio.prod.twilio-docs/images/test.original.jpg" }
       let(:path) { "original.jpeg"}
 
-      it "downloads the source file from uri in path location", :skip do
+      it "downloads the source file from uri in path location",
+        :skip => "alone it works, with the whole suite it does not" do
         download
 
         File.file?("./tmp/" + path)
