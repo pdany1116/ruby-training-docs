@@ -8,20 +8,21 @@ require "./lib/user_body_parser"
 require "./lib/image_downloader"
 require "./lib/password_hasher"
 require "./lib/token_generator"
+require "./lib/validator/user_validator"
 
 class API < Sinatra::Application
   post "/signup" do
-    body = UserBodyParser.parse(request.body.read)
-    user_id = db.insert_user(User.new(body.username, PasswordHasher.create(body.password)))
-    token = TokenGenerator.create()
+    params = UserBodyParser.parse(request.body.read)
+    UserValidator.validate(params)
+    user = create_user(params)
+    token = TokenGenerator.generate
+    user_id = db.insert_user(user)
     db.insert_token(Token.new(user_id, token))
 
     [201, { "user": { "token": token } }.to_json]
 
   rescue UserBodyError => e
     [409, "#{e}"]
-  rescue => e
-    pp "#{e}"
   end
 
   post "/login" do
@@ -54,5 +55,9 @@ class API < Sinatra::Application
 
   def db
     DB.create
+  end
+
+  def create_user(params)
+    User.new(params["user"]["username"], PasswordHasher.create(params["user"]["password"]))
   end
 end

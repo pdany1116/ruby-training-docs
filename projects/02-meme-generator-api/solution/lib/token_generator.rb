@@ -1,7 +1,7 @@
 require "securerandom"
 
 class TokenGenerator
-  def self.create
+  def self.generate
     SecureRandom.hex(16)
   end
 end
