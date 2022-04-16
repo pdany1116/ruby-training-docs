@@ -1,4 +1,4 @@
 require "./lib/errors/user_error"
 
-class UserBodyError < UserError
+class UserInputError < UserError
 end

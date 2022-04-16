@@ -62,5 +62,83 @@ RSpec.describe UserValidator do
         expect{ "#{validate}" }.to raise_error("'user.username' not found in body!")
       end
     end
+
+    context "with blank username" do
+      let(:body) do
+        {
+          "user" => {
+            "username" => "",
+            "password" => "password"
+          }
+        }
+      end
+      let(:errors) do
+        {
+          "errors": [
+            {
+              "message": "Username is blank!"
+            }
+          ]
+        }.to_json
+      end
+
+      it "raises UserInputError with errors array and username blank message" do
+        expect{ validate }.to raise_error(UserInputError)
+        expect{ "#{validate}" }.to raise_error(errors)
+      end
+    end
+
+    context "with blank password" do
+      let(:body) do
+        {
+          "user" => {
+            "username" => "username",
+            "password" => ""
+          }
+        }
+      end
+      let(:errors) do
+        {
+          "errors": [
+            {
+              "message": "Password is blank!"
+            }
+          ]
+        }.to_json
+      end
+
+      it "raises UserInputError with errors array and username blank message" do
+        expect{ validate }.to raise_error(UserInputError)
+        expect{ "#{validate}" }.to raise_error(errors)
+      end
+    end
+
+    context "with blank password and blank username" do
+      let(:body) do
+        {
+          "user" => {
+            "username" => "",
+            "password" => ""
+          }
+        }
+      end
+      let(:errors) do
+        {
+          "errors": [
+            {
+              "message": "Username is blank!"
+            },
+            {
+              "message": "Password is blank!"
+            }
+          ]
+        }.to_json
+      end
+
+      it "raises UserInputError with errors array and username blank message" do
+        expect{ validate }.to raise_error(UserInputError)
+        expect{ "#{validate}" }.to raise_error(errors)
+      end
+    end
   end
 end

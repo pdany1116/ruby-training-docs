@@ -1,4 +1,5 @@
 require "./lib/api"
+require "./lib/db/db"
 require "rspec"
 
 RSpec.describe API do
@@ -6,6 +7,10 @@ RSpec.describe API do
 
   def app
     described_class
+  end
+
+  before :all do
+    DB.create.clear_all
   end
 
   describe "POST /generate" do
@@ -192,9 +197,9 @@ RSpec.describe API do
         }.to_json
       end
 
-      let(:error) { { message: "Username is blank" }.to_json }
+      let(:error) { { "message" => "Username is blank!" } }
 
-      it "responds with bad request and username blank error message", :skip do
+      it "responds with bad request and username blank error message" do
         test_post
 
         errors = JSON.parse(last_response.body)["errors"]
@@ -214,9 +219,9 @@ RSpec.describe API do
         }.to_json
       end
 
-      let(:error) { { message: "Password is blank" }.to_json }
+      let(:error) { { "message" => "Password is blank!" } }
 
-      it "responds with bad request and password blank error message", :skip do
+      it "responds with bad request and password blank error message" do
         test_post
 
         errors = JSON.parse(last_response.body)["errors"]
@@ -236,7 +241,11 @@ RSpec.describe API do
         }.to_json
       end
 
-      it "responds with conflict", :skip do
+      before :each do
+        post '/signup', body
+      end
+
+      it "responds with conflict" do
         test_post
 
         expect(last_response.status).to eq 409

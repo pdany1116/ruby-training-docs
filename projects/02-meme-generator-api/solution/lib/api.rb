@@ -21,7 +21,9 @@ class API < Sinatra::Application
 
     [201, { "user": { "token": token } }.to_json]
 
-  rescue UserBodyError => e
+  rescue UserBodyError, UserInputError => e
+    [400, "#{e}"]
+  rescue UserExistingError => e
     [409, "#{e}"]
   end
 

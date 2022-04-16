@@ -3,6 +3,7 @@ require "time"
 require "fileutils"
 require "./lib/db/user"
 require "./lib/db/token"
+require "./lib/errors/user_existing_error"
 
 class DB
   DB_PATH = "./db.sqlite3"
@@ -61,6 +62,8 @@ class DB
     SQL
 
     @db.last_insert_row_id
+  rescue SQLite3::ConstraintException
+    raise UserExistingError.new("Username is already taken!")
   end
 
   def insert_token(token)
