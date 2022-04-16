@@ -1,4 +1,4 @@
-require "./lib/validator/user_validator"
+require "./lib/user_validator"
 require "json"
 
 RSpec.describe UserValidator do

@@ -8,7 +8,7 @@ require "./lib/user_body_parser"
 require "./lib/image_downloader"
 require "./lib/password_hasher"
 require "./lib/token_generator"
-require "./lib/validator/user_validator"
+require "./lib/user_validator"
 
 class API < Sinatra::Application
   post "/signup" do
@@ -28,7 +28,8 @@ class API < Sinatra::Application
   end
 
   post "/login" do
-    500
+    params = UserBodyParser.parse(request.body.read)
+    UserValidator.validate(params)
   end
 
   post "/generate" do
