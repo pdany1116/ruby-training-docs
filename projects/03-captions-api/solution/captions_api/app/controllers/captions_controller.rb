@@ -3,6 +3,8 @@ require 'pry'
 class CaptionsController < ApplicationController
   before_action :set_caption, only: %i[ show destroy ]
 
+  rescue_from ActiveRecord::RecordNotFound, :with => :not_found_handler  
+
   # GET /captions
   def index
     @captions = Caption.all
@@ -12,18 +14,14 @@ class CaptionsController < ApplicationController
 
   # GET /captions/:id
   def show
-    if @caption.nil?
-      render json: "", status: :not_found
-    else
       render json: { "caption": @caption }, status: :ok
-    end
   end
 
   # POST /captions
   def create
     @caption = Caption.new(caption_params)
 
-    # TODO: pass caption to instagram caption creator
+    # TODO: replace this with caption_url generator and image creator
     @caption.caption_url = "http://127.0.0.1:3000/image"
 
     if @caption.save
@@ -33,26 +31,36 @@ class CaptionsController < ApplicationController
     end
   end
 
-
   def image
     render status: :success
   end
 
   # DELETE /captions/:id
   def destroy
-    @caption.destroy
+    if @caption.destroy
+      render status: :ok
+    else
+      render json: @caption.errors, status: :unprocessable_entity
+    end
   end
 
   private
 
   def set_caption
     @caption = Caption.find(params[:id])
-
-  rescue ActiveRecord::RecordNotFound
-    @caption = nil
   end
 
   def caption_params
     params.require(:caption).permit(:url, :text)
+  end
+
+  def not_found_handler(exception)  
+    body = {
+      "code": "caption_not_found",
+      "title": "Caption not found by id",
+      "description": "No Caption with provided id was found."
+    }.to_json
+
+    render json: body, status: :not_found
   end
 end

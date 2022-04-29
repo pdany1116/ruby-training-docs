@@ -71,16 +71,17 @@ RSpec.describe "/captions", type: :request do
          caption
       end
 
-      it "responds with NOT FOUND" do
+      it "retruns not found" do
         get_captions
 
         expect(response).to have_http_status(404)
       end
 
-      it "returns empty body" do
+      it "returns a not found error json message" do
         get_captions
 
-        expect(response.body).to eq ""
+        body = JSON.parse(response.body)
+        expect(body["code"]).to eq "caption_not_found"
       end
     end
   end
@@ -98,13 +99,13 @@ RSpec.describe "/captions", type: :request do
         }
       end
 
-      it "responds with temporary redirect" do
+      it "responds with created" do
         post_captions
 
         expect(response).to have_http_status(201)
       end
 
-      it "creates a new Caption" do
+      it "creates a new caption" do
         post_captions
 
         get "/captions"
@@ -121,7 +122,6 @@ RSpec.describe "/captions", type: :request do
         post_captions
 
         body = JSON.parse(response.body)
-
         expect(body["caption"]["url"]).to eq params[:caption][:url]
         expect(body["caption"]["text"]).to eq params[:caption][:text]
         expect(body["caption"]["caption_url"] =~ URI::regexp).to eq 0
@@ -130,12 +130,14 @@ RSpec.describe "/captions", type: :request do
     end
 
     context "with invalid parameters" do
-      it "does not create a new Caption, returns 400" do
+      it "does not create a new Caption, returns 400",
+      :skip => "Not implemented yet!" do
 
         expect(response).to have_http_status(400)
       end
 
-      it "renders a JSON response with errors for the new caption" do
+      it "renders a JSON response with errors for the new caption",
+      :skip => "Not implemented yet!" do
 
         expect(response).to have_http_status(:success)
       end
@@ -144,18 +146,37 @@ RSpec.describe "/captions", type: :request do
 
   describe "DELETE /captions" do
     subject(:delete_captions) { delete "/captions/#{my_caption.id}" }
-    let (:my_caption) { FactoryBot.create(:caption) }
+    
+    context "with existing caption" do
+      let (:my_caption) { FactoryBot.create(:caption) }
 
-    it "returns ok" do
-      delete_captions
-
-      expect(response).to have_http_status(200)
+      it "returns ok" do
+        delete_captions
+  
+        expect(response).to have_http_status(200)
+      end
     end
 
-    it "returns an error message as JSON" do
-      body = JSON.parse(response.body)
+    context "with not existing caption" do
+      let (:my_caption) do
+        caption = FactoryBot.build(:caption)
+        caption.id = 0
 
-      expect(body["code"]).not_to eq ""
+        caption
+      end
+      
+      it "returns not found" do
+        delete_captions
+
+        expect(response).to have_http_status(404)
+      end
+
+      it "returns a not found error json message" do
+        delete_captions
+
+        body = JSON.parse(response.body)
+        expect(body["code"]).to eq "caption_not_found"
+      end
     end
   end
 end
