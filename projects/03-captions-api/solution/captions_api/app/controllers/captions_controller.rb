@@ -1,3 +1,5 @@
+require 'pry'
+
 class CaptionsController < ApplicationController
   before_action :set_caption, only: %i[ show destroy ]
 
@@ -36,6 +38,9 @@ class CaptionsController < ApplicationController
   private
     def set_caption
       @caption = Caption.find(params[:id])
+
+    rescue ActiveRecord::RecordNotFound
+      @caption = nil
     end
 
     def caption_params

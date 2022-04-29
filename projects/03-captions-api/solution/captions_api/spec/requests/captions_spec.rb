@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'pry'
 
 RSpec.describe "/captions", type: :request do
   describe "GET /captions" do
@@ -62,7 +63,12 @@ RSpec.describe "/captions", type: :request do
     end
 
     context "with non existing caption" do
-      let (:my_caption) { FactoryBot.build(:caption) }
+      let (:my_caption) do
+         caption = FactoryBot.build(:caption)
+         caption.id = 0
+
+         caption
+      end
 
       it "responds with NOT FOUND" do
         get_captions
