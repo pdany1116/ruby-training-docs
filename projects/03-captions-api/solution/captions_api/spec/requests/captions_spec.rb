@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'pry'
+require 'uri'
 
 RSpec.describe "/captions", type: :request do
   describe "GET /captions" do
@@ -100,20 +101,31 @@ RSpec.describe "/captions", type: :request do
       it "responds with temporary redirect" do
         post_captions
 
-        expect(response).to have_http_status(303)
+        expect(response).to have_http_status(201)
       end
 
-      it "creates a new Caption",
-         :skip => "figure out how to check added caption in captions collection" do
+      it "creates a new Caption" do
+        post_captions
+
+        get "/captions"
+        captions = JSON.parse(response.body)["captions"]
+        caption = captions[0]
+
+        expect(captions.size).to eq 1
+        expect(caption["url"]).to eq params[:caption][:url]
+        expect(caption["text"]).to eq params[:caption][:text]
+        expect(caption["caption_url"] =~ URI::regexp).to eq 0
       end
 
       it "returns the new added caption as JSON" do
         post_captions
 
         body = JSON.parse(response.body)
+
         expect(body["caption"]["url"]).to eq params[:caption][:url]
         expect(body["caption"]["text"]).to eq params[:caption][:text]
-        expect(body["caption"]["caption_url"]).not_to eq ""
+        expect(body["caption"]["caption_url"] =~ URI::regexp).to eq 0
+        expect(body["caption"]["caption_url"]).to eq response.location
       end
     end
 

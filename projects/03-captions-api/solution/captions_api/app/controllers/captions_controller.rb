@@ -15,7 +15,7 @@ class CaptionsController < ApplicationController
     if @caption.nil?
       render json: "", status: :not_found
     else
-      render json: { "caption": @caption }
+      render json: { "caption": @caption }, status: :ok
     end
   end
 
@@ -23,11 +23,19 @@ class CaptionsController < ApplicationController
   def create
     @caption = Caption.new(caption_params)
 
+    # TODO: pass caption to instagram caption creator
+    @caption.caption_url = "http://127.0.0.1:3000/image"
+
     if @caption.save
-      render json: @caption, status: :created, location: @caption
+      render json: { "caption": @caption }, status: :created, location: @caption.caption_url
     else
       render json: @caption.errors, status: :unprocessable_entity
     end
+  end
+
+
+  def image
+    render status: :success
   end
 
   # DELETE /captions/:id

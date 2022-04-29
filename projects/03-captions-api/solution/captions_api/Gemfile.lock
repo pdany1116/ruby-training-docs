@@ -180,6 +180,7 @@ GEM
     timeout (0.2.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
+    uri (0.11.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -199,6 +200,7 @@ DEPENDENCIES
   rspec-rails
   sqlite3 (~> 1.4)
   tzinfo-data
+  uri
 
 RUBY VERSION
    ruby 3.0.3p157
