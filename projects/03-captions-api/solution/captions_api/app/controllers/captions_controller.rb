@@ -1,6 +1,6 @@
 require 'pry'
 
-class CaptionsController < ApplicationController
+class CaptionsController < ActionController::API
   before_action :set_caption, only: %i[ show destroy ]
 
   rescue_from ActiveRecord::RecordNotFound, :with => :not_found_handler  
