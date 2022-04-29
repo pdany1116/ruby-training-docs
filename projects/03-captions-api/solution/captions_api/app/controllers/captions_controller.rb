@@ -31,10 +31,6 @@ class CaptionsController < ActionController::API
     end
   end
 
-  def image
-    render status: :success
-  end
-
   # DELETE /captions/:id
   def destroy
     if @caption.destroy
