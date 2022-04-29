@@ -5,12 +5,16 @@ class CaptionsController < ApplicationController
   def index
     @captions = Caption.all
 
-    render json: @captions
+    render json: { "captions": @captions }
   end
 
   # GET /captions/:id
   def show
-    render json: @caption
+    if @caption.nil?
+      render json: "", status: :not_found
+    else
+      render json: { "caption": @caption }
+    end
   end
 
   # POST /captions
@@ -35,7 +39,6 @@ class CaptionsController < ApplicationController
     end
 
     def caption_params
-      params.fetch(:caption, {})
-      #params.require(:caption).permit(:url, :text)
+      params.require(:caption).permit(:url, :text)
     end
 end

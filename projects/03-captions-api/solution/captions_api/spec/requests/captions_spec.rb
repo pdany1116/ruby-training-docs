@@ -18,8 +18,8 @@ RSpec.describe "/captions", type: :request do
       it "return an array of captions with size 5 as JSON" do
         get_captions
 
-        body = JSON.parse(response.body)
-        expect(body["captions"].size).to eq 5
+        captions = JSON.parse(response.body)["captions"]
+        expect(captions.size).to eq 5
       end
     end
 
@@ -33,8 +33,8 @@ RSpec.describe "/captions", type: :request do
       it "returns an empty array as JSON" do
         get_captions
 
-        body = JSON.parse(response.body)
-        expect(body.size).to eq 0
+        captions = JSON.parse(response.body)["captions"]
+        expect(captions.size).to eq 0
       end
     end
   end
