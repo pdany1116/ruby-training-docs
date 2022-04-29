@@ -36,14 +36,15 @@ class CaptionsController < ApplicationController
   end
 
   private
-    def set_caption
-      @caption = Caption.find(params[:id])
 
-    rescue ActiveRecord::RecordNotFound
-      @caption = nil
-    end
+  def set_caption
+    @caption = Caption.find(params[:id])
 
-    def caption_params
-      params.require(:caption).permit(:url, :text)
-    end
+  rescue ActiveRecord::RecordNotFound
+    @caption = nil
+  end
+
+  def caption_params
+    params.require(:caption).permit(:url, :text)
+  end
 end
