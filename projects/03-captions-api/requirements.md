@@ -30,7 +30,7 @@ When the response is `4xx` then the response body should contain an error object
 {
   "code": "missing_parameters",
   "title": "Parameter is missing from the request body",
-  "description" "url parameter is missing from the request body. It is a required parameter and the request cannot be processed without it"
+  "description": "url parameter is missing from the request body. It is a required parameter and the request cannot be processed without it"
 }
 ```
 
@@ -59,7 +59,7 @@ with the following body:
 
 The server will generate a new image that will have the text specified by `text` added as caption on top of the image specified by `url`.
 
-The response will be:
+The response body should be:
 ```json
 {
   "caption": {
@@ -70,7 +70,7 @@ The response will be:
   },
 }
 ```
-The response status will be: 303 and should contain in `Location` header field the `caption_url`.
+The response status will be 201 (created)
 
 Attributes:
 - `id` - is an unique ID that uniquely identifies a generated simple caption
@@ -97,7 +97,7 @@ The responde body will be a JSON with the following structure:
       "id": 124,
       "url": "",
       "text": "",
-      "caption_url: ""
+      "caption_url": ""
     }
   ]
 }
