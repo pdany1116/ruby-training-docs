@@ -1,8 +1,8 @@
 require "spec_helper"
 require "./lib/program"
-require "./lib/command_results/command_error_result"
-require "./lib/command_results/show_command_result"
-require "./lib/command_results/search_command_result"
+require "./lib/commands/results/command_error_result"
+require "./lib/commands/results/show_command_result"
+require "./lib/commands/results/search_command_result"
 
 RSpec.describe Program do
   subject(:program) { described_class }
@@ -65,8 +65,8 @@ RSpec.describe Program do
         result = execute
 
         expect(result.class).to be ShowCommandResult
-        expect(result.gem_name).to eq "rspec"
-        expect(result.info).to eq "BDD for Ruby"
+        expect(result.gem.name).to eq "rspec"
+        expect(result.gem.info).to eq "BDD for Ruby"
         expect(result.exit_code).to eq 0
       end
     end
@@ -100,7 +100,7 @@ RSpec.describe Program do
         result = execute
 
         expect(result.class).to be SearchCommandResult
-        expect(result.gem_names.size).not_to eq 0
+        expect(result.gems.size).not_to eq 0
         expect(result.exit_code).to eq 0
       end
     end
@@ -112,8 +112,8 @@ RSpec.describe Program do
         result = execute
 
         expect(result.class).to be SearchCommandResult
-        expect(result.gem_names.class).to be Array
-        expect(result.gem_names.size).to eq 0
+        expect(result.gems.class).to be Array
+        expect(result.gems.size).to eq 0
         expect(result.exit_code).to eq 0
       end
     end
@@ -124,9 +124,81 @@ RSpec.describe Program do
       it "returns SearchCommandResult for the first argument" do
         result = execute
 
+        expect(result.class).to be SearchCommandResult
+        expect(result.gems.size).not_to eq 0
+        expect(result.exit_code).to eq 0
+      end
+    end
+
+    context "with search command and --licenses option" do
+      let(:argv) { %w[search rspec --licenses MIT] }
+
+      it "returns SearchCommandResult with gems containing specified license" do
+        result = execute
+
+        expect(result.class).to be SearchCommandResult
+        expect(result.gems.size).not_to eq 0
+        expect(result.exit_code).to eq 0
+      end
+    end
+
+    context "with search command and --licenses option, but with not existing license" do
+      let(:argv) { %w[search rspec --licenses NOT_EXISTING_LICENSE] }
+
+      it "returns SearchCommandResult with empty array of gems" do
+        result = execute
+
+        expect(result.class).to be SearchCommandResult
+        expect(result.gems.size).to eq 0
+        expect(result.exit_code).to eq 0
+      end
+    end
+
+    context "with search command and --most-downloads-first option" do
+      let(:argv) { %w[search rspec --most-downloads-first] }
+
+      it "returns SearchCommandResult with gems ordered by most downloads first" do
+        result = execute
+
+        expect(result.class).to be SearchCommandResult
+        expect(result.gems.size).not_to eq 0
+        expect(result.exit_code).to eq 0
+      end
+    end
+
+    context "with search command and --most-downloads-first, --licenses options" do
+      let(:argv) { %w[search rspec --most-downloads-first --licenses MIT] }
+
+      it "returns SearchCommandResult with gems ordered by most downloads first and containing specified license" do
+        result = execute
+
+        expect(result.class).to be SearchCommandResult
+        expect(result.gems.size).not_to eq 0
+        expect(result.exit_code).to eq 0
+      end
+    end
+
+    context "with search command and --most-downloads-first, --licenses, --not-existing-option options" do
+      let(:argv) { %w[search rspec --not-existing-option --most-downloads-first --licenses MIT] }
+
+      it "returns CommandErrorResult" do
+        result = execute
+
         expect(result.class).to be CommandErrorResult
         expect(result.exit_code).not_to eq 0
       end
     end
+
+    context "with search command and --not-existing-option option" do
+      let(:argv) { %w[search rspec --not-existing-option] }
+
+      it "returns CommandErrorResult" do
+        result = execute
+
+        expect(result.class).to be CommandErrorResult
+        expect(result.exit_code).not_to eq 0
+      end
+    end
+
   end
 end

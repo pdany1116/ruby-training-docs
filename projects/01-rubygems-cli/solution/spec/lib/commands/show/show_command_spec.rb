@@ -1,5 +1,5 @@
 require "spec_helper"
-require "./lib/show_command"
+require "./lib/commands/show/show_command"
 
 RSpec.describe ShowCommand do
   subject(:program) { described_class }
@@ -8,7 +8,7 @@ RSpec.describe ShowCommand do
     subject(:execute) { program.execute(arg) }
 
     context "with existing gem" do
-      let(:arg) { "rspec" }
+      let(:arg) { ["rspec"] }
 
       it "returns ShowCommandResult" do
         result = execute
